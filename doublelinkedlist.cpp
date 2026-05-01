@@ -22,3 +22,9 @@ public:
     {
         START = NULL;
     }
+
+    void addNode()
+    {
+        int nim;
+        cout << "Enter the roll number of the student: ";
+        cin >> nim;
