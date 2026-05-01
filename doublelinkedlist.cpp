@@ -1,3 +1,13 @@
 #include <iostream>
 #include <string>
 using namespace std;
+
+string response_std;
+
+class Node
+{
+public:
+    int no;
+    Node *next;
+    Node *prev;
+};
