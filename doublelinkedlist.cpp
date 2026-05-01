@@ -65,3 +65,13 @@ public:
         {
             current = current->next;
         }
+        if (current->next != NULL && nim == current->next->no)
+        {
+            cout << "\nDuplicate roll numbers not allowed" << endl;
+            return;
+        }
+
+        // Step 8: Insert between current and current->next
+        Node *nextnode = current->next;
+        newnode->next = nextnode; // Step 9
+        newnode->prev = current;  // Step 10
