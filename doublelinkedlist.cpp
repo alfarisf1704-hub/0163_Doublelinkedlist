@@ -65,6 +65,7 @@ public:
         {
             current = current->next;
         }
+
         if (current->next != NULL && nim == current->next->no)
         {
             cout << "\nDuplicate roll numbers not allowed" << endl;
@@ -75,11 +76,13 @@ public:
         Node *nextnode = current->next;
         newnode->next = nextnode; // Step 9
         newnode->prev = current;  // Step 10
+
         if (nextnode != NULL)
             nextnode->prev = newnode; // Step 11
 
         current->next = newnode; // Step 12
     }
+
     void deleteNode()
     {
         if (START == NULL)
@@ -105,6 +108,7 @@ public:
             cout << "Record not found" << endl;
             return;
         }
+
         // Step 2: If node is at the beginning
         if (current == START)
         {
@@ -121,6 +125,7 @@ public:
             if (current->next != NULL)
                 current->next->prev = current->prev;
         }
+
         // Step 6: Delete node
         delete current;
         cout << "Record with roll number " << rollNo << " deleted" << endl;
@@ -156,7 +161,9 @@ public:
             cout << "\nList is empty" << endl;
             return;
         }
-        / Step 1 : Move to last node Node *currentnode = START;
+
+        // Step 1: Move to last node
+        Node *currentnode = START;
         int i = 1;
 
         while (currentnode->next != NULL)
