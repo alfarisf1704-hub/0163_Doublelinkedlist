@@ -53,3 +53,15 @@ public:
 
             // Step 5: newnode.prev = NULL
             newnode->prev = NULL;
+
+            // Step 6: START = newnode
+            START = newnode;
+            return;
+        }
+
+        // Step 7: Advance position for insertion
+        Node *current = START;
+        while (current->next != NULL && current->next->no < nim)
+        {
+            current = current->next;
+        }
