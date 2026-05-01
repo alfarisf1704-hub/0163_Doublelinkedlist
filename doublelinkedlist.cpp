@@ -2,12 +2,10 @@
 #include <string>
 using namespace std;
 
-string response_std;
-
 class Node
 {
 public:
-    int no;
+    int noMhs;
     Node *next;
     Node *prev;
 };
@@ -26,64 +24,64 @@ public:
     void addNode()
     {
         int nim;
-        cout << "Enter the roll number of the student: ";
+        cout << "\nEnter the roll number of the student: ";
         cin >> nim;
 
         // Step 1: Allocate memory for new node
-        Node *newnode = new Node();
+        Node *newNode = new Node();
 
         // Step 2: Assign value to the data field
-        newnode->no = nim;
+        newNode->noMhs = nim;
 
-        // If list is empty or inserting at 1st is empty or not in sorted
-        if (START == NULL || nim <= START->no)
+        // Step 3: Insert at beginning if list is empty or nim is smallest
+        if (START == NULL || nim <= START->noMhs)
         {
-            if (START != NULL && nim == START->no)
+            if (START != NULL && nim == START->noMhs)
             {
-                cout << "\nDuplicate roll numbers not allowed" << endl;
+                cout << "\nDuplicate number not allowed" << endl;
                 return;
             }
+            // Step 4: newNode.next = START
+            newNode->next = START;
 
-            // Step 3: newnode.next = START
-            newnode->next = START;
-
-            // Step 4: START.prev = newnode (if START exists)
+            // Step 5: START.prev = newNode (if START exists)
             if (START != NULL)
-                START->prev = newnode;
+                START->prev = newNode;
 
-            // Step 5: newnode.prev = NULL
-            newnode->prev = NULL;
+            // Step 6: newNode.prev = NULL
+            newNode->prev = NULL;
 
-            // Step 6: START = newnode
-            START = newnode;
+            // Step 7: START = newNode
+            START = newNode;
             return;
         }
 
-        // Step 7: Advance position for insertion
+        // insert in between node
+        // Step 8: Locate position for insertion
         Node *current = START;
-        while (current->next != NULL && current->next->no < nim)
+        while (current->next != NULL && current->next->noMhs < nim)
         {
             current = current->next;
         }
 
-        if (current->next != NULL && nim == current->next->no)
+        if (current->next != NULL && nim == current->next->noMhs)
         {
             cout << "\nDuplicate roll numbers not allowed" << endl;
             return;
         }
 
-        // Step 8: Insert between current and current->next
-        Node *nextnode = current->next;
-        newnode->next = nextnode; // Step 9
-        newnode->prev = current;  // Step 10
+        // Step 9: Insert between current and current->next
+        newNode->next = current->next; // Step 9a: newNode.next = current.next
+        newNode->prev = current;       // Step 9b: newNode.prev  = current
 
-        if (nextnode != NULL)
-            nextnode->prev = newnode; // Step 11
+        // insert last node
+        if (current->next != NULL)
+            current->next->prev = newNode; // Step 9c: current.next.prev = newNode
 
-        current->next = newnode; // Step 12
+        current->next = newNode; // Step 9d: current.next = newNode
     }
 
-    void deleteNode()
+    void hapus()
     {
         if (START == NULL)
         {
@@ -91,17 +89,15 @@ public:
             return;
         }
 
+        cout << "\nEnter the roll number of the student whose record is to be deleted: ";
         int rollNo;
-        cout << "Enter the roll number of the student whose record is to be deleted: ";
         cin >> rollNo;
 
         Node *current = START;
 
         // Step 1: Traverse the list to find the node
-        while (current != NULL && current->no != rollNo)
-        {
+        while (current != NULL && current->noMhs != rollNo)
             current = current->next;
-        }
 
         if (current == NULL)
         {
@@ -112,21 +108,21 @@ public:
         // Step 2: If node is at the beginning
         if (current == START)
         {
-            START = current->next; // Step 3a
+            START = current->next; // Step 2a: START = START.next
             if (START != NULL)
-                START->prev = NULL; // Step 3b
+                START->prev = NULL; // Step 3b: START.prev = NULL
         }
         else
         {
             // Step 4: Link previous node to next of current
             current->prev->next = current->next;
 
-            // Step 5: Link next node to prev of current
+            // Step 5: if current is not the last node
             if (current->next != NULL)
                 current->next->prev = current->prev;
         }
 
-        // Step 6: Delete node
+        // Step 5: Delete node
         delete current;
         cout << "Record with roll number " << rollNo << " deleted" << endl;
     }
@@ -139,19 +135,21 @@ public:
             return;
         }
 
-        // Step 1: Start from first node as currentnode
-        Node *currentnode = START;
+        // Step 1: Mark first node as currentNode
+        Node *currentNode = START;
 
+        // Step 2: Repeat until currentNode == NULL
         cout << "\nRecords in ascending order of roll number are:\n";
-        while (currentnode != NULL)
+        int i = 0;
+        while (currentNode != NULL)
         {
-            // Step 2: Print roll no as currentnode->info
-            cout << currentnode->no << " ";
+
+            cout << i + 1 << ". " << currentNode->noMhs << " " << endl;
 
             // Step 3: Move to next node
-            currentnode = currentnode->next;
+            currentNode = currentNode->next;
+            i++;
         }
-        cout << endl;
     }
 
     void revtraverse()
@@ -163,23 +161,22 @@ public:
         }
 
         // Step 1: Move to last node
-        Node *currentnode = START;
-        int i = 1;
-
-        while (currentnode->next != NULL)
+        Node *currentNode = START;
+        int i = 0;
+        while (currentNode->next != NULL)
         {
-            currentnode = currentnode->next;
+            currentNode = currentNode->next;
             i++;
         }
 
         // Step 2: Traverse backward
         cout << "\nRecords in descending order of roll number are:\n";
-        while (currentnode != NULL)
+        while (currentNode != NULL)
         {
-            cout << i << " " << currentnode->no << " " << endl;
+            cout << i + 1 << ". " << " " << currentNode->noMhs << " " << endl;
 
             // Step 3: Move to previous node
-            currentnode = currentnode->prev;
+            currentNode = currentNode->prev;
             i--;
         }
     }
@@ -198,11 +195,9 @@ public:
 
         Node *current = START;
 
-        // Step 1: Traverse and search roll no
-        while (current != NULL && current->no != rollNo)
-        {
+        // Step 1: Traverse to find matching roll number
+        while (current != NULL && current->noMhs != rollNo)
             current = current->next;
-        }
 
         // Step 2: Output result
         if (current == NULL)
@@ -212,7 +207,7 @@ public:
         else
         {
             cout << "Record found\n";
-            cout << "Roll number: " << current->no << endl;
+            cout << "Roll number: " << current->noMhs << endl;
         }
     }
 };
@@ -224,11 +219,12 @@ int main()
 
     do
     {
+
         cout << "\nMenu\n";
         cout << "1. Add Record\n";
         cout << "2. Delete Record\n";
-        cout << "3. Traverse ascending\n";
-        cout << "4. Traverse descending\n";
+        cout << "3. View ascending\n";
+        cout << "4. View descending\n";
         cout << "5. Search record\n";
         cout << "6. Exit\n";
         cout << "Enter your choice: ";
@@ -240,34 +236,27 @@ int main()
         case '1':
             list.addNode();
             break;
-
         case '2':
-            list.deleteNode();
+            list.hapus();
             break;
-
         case '3':
             list.traverse();
             break;
-
         case '4':
             list.revtraverse();
             break;
-
         case '5':
             list.searchData();
             break;
-
         case '6':
             return 0;
-
         default:
             cout << "Invalid option\n";
         }
-
         cout << "\nPress Enter to continue...";
         cin.ignore();
         cin.get();
-        system("cls");
-
+        cout << endl;
+        system("clear");
     } while (choice != '6');
 }
