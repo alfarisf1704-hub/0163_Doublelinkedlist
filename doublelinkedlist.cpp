@@ -37,3 +37,12 @@ public:
 
         // If list is empty or inserting at 1st is empty or not in sorted
         if (START == NULL || nim <= START->no)
+        {
+            if (START != NULL && nim == START->no)
+            {
+                cout << "\nDuplicate roll numbers not allowed" << endl;
+                return;
+            }
+
+            // Step 3: newnode.next = START
+            newnode->next = START;
